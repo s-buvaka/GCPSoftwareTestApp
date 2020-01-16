@@ -4,9 +4,9 @@ import com.wispapp.gcpsoftwaretestapp.core.common.Mapper
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.Function
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuItemModel
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuItemResponse
-import com.wispapp.gcpsoftwaretestapp.core.model.pojo.Response
+import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuResponse
 
-class MenuItemMapper : Mapper<Response, List<MenuItemModel>> {
+class MenuItemMapper : Mapper<MenuResponse, List<MenuItemModel>> {
 
     companion object {
 
@@ -15,7 +15,7 @@ class MenuItemMapper : Mapper<Response, List<MenuItemModel>> {
         private const val FUNCTION_URL = "function_url"
     }
 
-    override fun mapFrom(source: Response): List<MenuItemModel> =
+    override fun mapFrom(source: MenuResponse): List<MenuItemModel> =
         source.menu.map { mapMenuItemFromResponse(it) }
 
     private fun mapMenuItemFromResponse(item: MenuItemResponse): MenuItemModel =
