@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/fragment_text_padding"
-    tools:context=".ui.text.TextFragment">
+    tools:context=".ui.main.TextFragment">
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.wispapp.gcpsoftwaretestapp.ui.text
+package com.wispapp.gcpsoftwaretestapp.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

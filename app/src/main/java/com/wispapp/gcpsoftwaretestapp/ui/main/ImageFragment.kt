@@ -1,4 +1,4 @@
-package com.wispapp.gcpsoftwaretestapp.ui.image
+package com.wispapp.gcpsoftwaretestapp.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.wispapp.gcpsoftwaretestapp.R
 import com.wispapp.gcpsoftwaretestapp.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_image.*
 
 class ImageFragment : BaseFragment() {
 

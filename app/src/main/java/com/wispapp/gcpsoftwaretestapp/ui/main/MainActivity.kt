@@ -10,9 +10,6 @@ import com.wispapp.gcpsoftwaretestapp.R
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.Function
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuItemModel
 import com.wispapp.gcpsoftwaretestapp.ui.base.BaseFragment
-import com.wispapp.gcpsoftwaretestapp.ui.image.ImageFragment
-import com.wispapp.gcpsoftwaretestapp.ui.text.TextFragment
-import com.wispapp.gcpsoftwaretestapp.ui.url.WebViewFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_drawer.*
 

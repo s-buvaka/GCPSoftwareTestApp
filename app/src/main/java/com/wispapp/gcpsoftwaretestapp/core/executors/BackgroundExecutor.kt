@@ -6,9 +6,9 @@ import java.util.concurrent.Executors
 
 class BackgroundExecutor : Executor {
 
-    private val dbExecutor = Executors.newSingleThreadExecutor()
+    private val backgroundExecutor = Executors.newCachedThreadPool()
 
     override fun execute(runnable: Runnable) {
-        dbExecutor.execute(runnable)
+        backgroundExecutor.execute(runnable)
     }
 }

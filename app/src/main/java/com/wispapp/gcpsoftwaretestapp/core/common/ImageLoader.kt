@@ -22,7 +22,7 @@ class ImageLoaderImpl(private val executors: AppExecutors) : ImageLoader {
     }
 
     override fun loadImage(imageUrl: String, target: ImageView) {
-        executors.backgroundExecutor.execute { loadUrl(imageUrl, target) }
+        executors.background.execute { loadUrl(imageUrl, target) }
     }
 
     private fun loadUrl(imageUrl: String, target: ImageView) {
@@ -34,6 +34,6 @@ class ImageLoaderImpl(private val executors: AppExecutors) : ImageLoader {
             Log.e(LOG_TAG, e.message ?: "Error loading image")
             e.printStackTrace()
         }
-        executors.mainThreadExecutor.execute { target.setImageBitmap(bitmapImage) }
+        executors.mainThread.execute { target.setImageBitmap(bitmapImage) }
     }
 }

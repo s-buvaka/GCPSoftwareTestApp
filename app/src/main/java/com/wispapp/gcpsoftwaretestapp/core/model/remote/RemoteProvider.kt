@@ -9,36 +9,15 @@ import java.lang.reflect.Type
 import java.net.HttpURLConnection
 import java.net.URL
 
+interface RemoteProvider<T> {
 
-interface RemoteProvider {
-
-    fun getMenu(): Result<List<MenuResponse>>
+    fun get(): Result<T>
 }
 
-class RemoteProviderImpl private constructor(private val baseUrl: String) : RemoteProvider {
-
-    companion object {
-
-        private const val URL_GET_MENU = "fk3d5kg6cptkpr6/menu.json?dl=1"
-
-        private var remoteProvider: RemoteProviderImpl? = null
-
-        fun getInstance(baseUrl: String): RemoteProviderImpl {
-            return remoteProvider?.let { it } ?: run {
-                val provider = RemoteProviderImpl(baseUrl)
-                remoteProvider = provider
-                provider
-            }
-        }
-    }
-
-    override fun getMenu(): Result<List<MenuResponse>> {
-        val url = baseUrl + URL_GET_MENU
-        return getResponseText(url)
-    }
+abstract class BaseRemoteProvider<T> : RemoteProvider<T>{
 
     @Throws(IOException::class)
-    private inline fun <reified T> getResponseText(stringUrl: String): Result<T> {
+    protected inline fun <reified T> getResult(stringUrl: String): Result<T> {
         val response = StringBuilder()
         val url = URL(stringUrl)
         val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
@@ -51,7 +30,7 @@ class RemoteProviderImpl private constructor(private val baseUrl: String) : Remo
         return Result.Error(Exception("Network exception"))
     }
 
-    private inline fun <reified T> getResponseObject(
+    protected inline fun <reified T> getResponseObject(
         urlConnection: HttpURLConnection,
         response: StringBuilder
     ): T {
@@ -66,5 +45,5 @@ class RemoteProviderImpl private constructor(private val baseUrl: String) : Remo
         return mapResponse(response.toString(), T::class.java)
     }
 
-    private fun <T> mapResponse(response: String, clazz: Type): T = Gson().fromJson(response, clazz)
+    protected fun <T> mapResponse(response: String, clazz: Type): T = Gson().fromJson(response, clazz)
 }

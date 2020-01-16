@@ -1,4 +1,4 @@
-package com.wispapp.gcpsoftwaretestapp.ui.url
+package com.wispapp.gcpsoftwaretestapp.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,8 @@ class WebViewFragment : BaseFragment() {
         private const val ARG_URL = "url"
 
         fun newInstance(url: String): WebViewFragment {
-            val fragment = WebViewFragment()
+            val fragment =
+                WebViewFragment()
             val args = Bundle().apply {
                 putString(ARG_URL, url)
             }
