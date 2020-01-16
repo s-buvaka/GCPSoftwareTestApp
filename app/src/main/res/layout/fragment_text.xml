@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/fragment_text_padding"
+    tools:context=".ui.text.TextFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/param_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/fragment_text_param_text_size"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dapibus pellentesque orci, ut consequat arcu vestibulum quis. Etiam non tortor in elit semper euismod at vel est. Morbi et ex in quam faucibus efficitur at eget neque. Suspendisse potenti. Sed ut vehicula lorem. Pellentesque elementum, felis ornare lobortis porta, nisl purus auctor nibh, nec dapibus libero mauris et mi. Phasellus sem urna, consectetur ac ex at, fermentum facilisis urna. Curabitur nec velit volutpat, dapibus ante ut, pretium orci. Nulla id leo iaculis, condimentum mi a, pretium leo. Aliquam sagittis neque ac nunc blandit mattis. Morbi rhoncus, ante ut fermentum commodo, elit risus interdum tortor, in blandit risus orci commodo est. Nullam suscipit purus justo, vel semper felis blandit eu. Donec rutrum pretium tempus. Vivamus quis efficitur mauris. Praesent tempor pulvinar vulputate. Suspendisse arcu tellus, commodo sit amet pretium eget, porttitor non velit." />
+
+    </FrameLayout>
+</ScrollView>

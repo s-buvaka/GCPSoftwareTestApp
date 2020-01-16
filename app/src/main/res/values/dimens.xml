@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Main Activity-->
+    <dimen name="main_activity_progress_bar_size">50dp</dimen>
+
+    <dimen name="nav_drawer_title_text_size">14sp</dimen>
+    <dimen name="nav_drawer_padding">16dp</dimen>
+    <dimen name="nav_drawer_title_margin">8dp</dimen>
+
+    <!--Fragment Text-->
+    <dimen name="fragment_text_padding">8dp</dimen>
+    <dimen name="fragment_text_param_text_size">16sp</dimen>
+</resources>

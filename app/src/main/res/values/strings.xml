@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GCP Software Test App</string>
+
+    <!--Main Activity-->
+    <string name="nav_drawer_open">Открыть панель навигации</string>
+    <string name="nav_drawer_close">Закрыть панель навигации</string>
+
+    <!--Fragment Image-->
+    <string name="fragment_image_param_description">Param Description</string>
+</resources>
