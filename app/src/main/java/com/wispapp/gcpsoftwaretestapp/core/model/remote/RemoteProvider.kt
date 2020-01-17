@@ -15,25 +15,42 @@ interface RemoteProvider<T> {
 
 abstract class BaseRemoteProvider<T> : RemoteProvider<T>{
 
-    @Throws(IOException::class)
     protected inline fun <reified T> getResult(stringUrl: String): Result<T> {
         val response = StringBuilder()
         val url = URL(stringUrl)
-        val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-
-        if (urlConnection.responseCode == HttpURLConnection.HTTP_OK) {
-            val input = BufferedReader(InputStreamReader(urlConnection.inputStream))
-            var strLine: String?
-
-            while (input.readLine().also { strLine = it } != null) {
-                response.append(strLine)
-            }
-            input.close()
-            val data = mapResponse<T>(response.toString(), T::class.java)
-            return Result.Success(data)
+        return try {
+            executeResponse(url, response)
+        } catch (e: IOException) {
+            Result.Error(e)
         }
 
-        return Result.Error(Exception("Network exception"))
+    }
+
+    protected inline fun <reified T> executeResponse(
+        url: URL,
+        response: StringBuilder
+    ): Result<T> {
+        val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+
+        return if (urlConnection.responseCode == HttpURLConnection.HTTP_OK) {
+            val data = writeData<T>(urlConnection, response)
+            Result.Success(data)
+        } else
+            Result.Error(Exception("Network exception"))
+    }
+
+    protected inline fun <reified T> writeData(
+        urlConnection: HttpURLConnection,
+        response: StringBuilder
+    ): T {
+        val input = BufferedReader(InputStreamReader(urlConnection.inputStream))
+        var strLine: String?
+
+        while (input.readLine().also { strLine = it } != null) {
+            response.append(strLine)
+        }
+        input.close()
+        return mapResponse(response.toString(), T::class.java)
     }
 
     protected fun <T> mapResponse(response: String, clazz: Type): T = Gson().fromJson(response, clazz)

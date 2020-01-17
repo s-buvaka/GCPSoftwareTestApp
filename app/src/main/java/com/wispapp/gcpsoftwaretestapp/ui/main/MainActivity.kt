@@ -13,7 +13,6 @@ import com.wispapp.gcpsoftwaretestapp.R
 import com.wispapp.gcpsoftwaretestapp.core.di.Injectable
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.Function
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuItemModel
-import com.wispapp.gcpsoftwaretestapp.ui.base.BaseFragment
 import com.wispapp.gcpsoftwaretestapp.ui.image.ImageFragment
 import com.wispapp.gcpsoftwaretestapp.ui.text.TextFragment
 import com.wispapp.gcpsoftwaretestapp.ui.url.WebViewFragment
@@ -59,9 +58,15 @@ class MainActivity : AppCompatActivity(), Injectable {
     private fun observeMenuData() {
         menuViewModel.menuLiveData.observe(this, Observer { menuItems ->
             menuItems.forEach { addTitleToNavDrawer(it) }
-            if (isDataNotLoaded) openFragment(getFragmentFromState(menuItems[0]), menuItems[0])
+
+            if (isDataNotLoaded) openFirstFragment(menuItems[0])
+
             isDataNotLoaded = false
         })
+    }
+
+    private fun openFirstFragment(menuItem: MenuItemModel) {
+        openFragment(getFragmentFromState(menuItem), menuItem)
     }
 
     private fun observeDataLoading() {
@@ -114,7 +119,7 @@ class MainActivity : AppCompatActivity(), Injectable {
         return view
     }
 
-    private fun getFragmentFromState(menuItem: MenuItemModel): BaseFragment {
+    private fun getFragmentFromState(menuItem: MenuItemModel): Fragment {
         return when (menuItem.function) {
             Function.TEXT -> TextFragment.newInstance(menuItem.name)
             Function.IMAGE -> ImageFragment.newInstance(menuItem.name)
@@ -123,7 +128,8 @@ class MainActivity : AppCompatActivity(), Injectable {
     }
 
     private fun openFragment(fragment: Fragment, menuItem: MenuItemModel) {
-        if (supportFragmentManager.findFragmentByTag(menuItem.name) != null) {
+        val isFragmentAdd = supportFragmentManager.findFragmentByTag(menuItem.name) != null
+        if (isFragmentAdd) {
             supportFragmentManager.popBackStack(menuItem.name, 0)
         } else {
             supportFragmentManager

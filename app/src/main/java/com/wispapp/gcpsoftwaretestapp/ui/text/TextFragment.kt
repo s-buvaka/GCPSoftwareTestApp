@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wispapp.gcpsoftwaretestapp.R
 import com.wispapp.gcpsoftwaretestapp.core.di.Injectable
 import com.wispapp.gcpsoftwaretestapp.core.extensions.ViewModelClassMap
 import com.wispapp.gcpsoftwaretestapp.core.extensions.sharedViewModel
-import com.wispapp.gcpsoftwaretestapp.ui.base.BaseFragment
 import com.wispapp.gcpsoftwaretestapp.ui.viewmodels.MenuViewModel
 import kotlinx.android.synthetic.main.fragment_text.*
 import javax.inject.Inject
 
-class TextFragment : BaseFragment(), Injectable {
+class TextFragment : Fragment(), Injectable {
 
     private lateinit var classMap: ViewModelClassMap
     private lateinit var factory: ViewModelProvider.Factory
@@ -37,7 +37,12 @@ class TextFragment : BaseFragment(), Injectable {
         return inflater.inflate(R.layout.fragment_text, container, false)
     }
 
-    override fun loadContent() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeMenuData()
+    }
+
+    private fun observeMenuData() {
         val title = arguments?.getString(ARG_MENU_TITLE)
 
         menuViewModel.menuLiveData.observe(this, Observer { menuItems ->
