@@ -10,9 +10,9 @@ class MenuItemMapper : Mapper<MenuResponse, List<MenuItemModel>> {
 
     companion object {
 
-        private const val FUNCTION_TEXT = "function_text"
-        private const val FUNCTION_IMAGE = "function_image"
-        private const val FUNCTION_URL = "function_url"
+        private const val FUNCTION_TEXT = "text"
+        private const val FUNCTION_IMAGE = "image"
+        private const val FUNCTION_URL = "url"
     }
 
     override fun mapFrom(source: MenuResponse): List<MenuItemModel> =

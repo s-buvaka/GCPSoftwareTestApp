@@ -1,11 +1,10 @@
 package com.wispapp.gcpsoftwaretestapp.core.di.modules
 
 import com.wispapp.gcpsoftwaretestapp.core.di.scope.ActivityScope
-import com.wispapp.gcpsoftwaretestapp.ui.main.ImageFragment
+import com.wispapp.gcpsoftwaretestapp.ui.image.ImageFragment
 import com.wispapp.gcpsoftwaretestapp.ui.main.MainActivity
-import com.wispapp.gcpsoftwaretestapp.ui.main.TextFragment
-import com.wispapp.gcpsoftwaretestapp.ui.main.WebViewFragment
-import com.wispcoolwisp.dagger_viewmodel_sample.di.modules.ViewModelModule
+import com.wispapp.gcpsoftwaretestapp.ui.text.TextFragment
+import com.wispapp.gcpsoftwaretestapp.ui.url.WebViewFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

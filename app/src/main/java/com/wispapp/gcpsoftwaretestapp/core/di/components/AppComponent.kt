@@ -4,8 +4,10 @@ import android.app.Application
 import com.wispapp.gcpsoftwaretestapp.core.application.App
 import com.wispapp.gcpsoftwaretestapp.core.di.modules.ActivityInjectionModule
 import com.wispapp.gcpsoftwaretestapp.core.di.modules.AppModule
+import com.wispapp.gcpsoftwaretestapp.core.di.modules.DataSourceModule
+import com.wispapp.gcpsoftwaretestapp.core.di.modules.RemoteModule
 import com.wispapp.gcpsoftwaretestapp.core.di.scope.AppScope
-import com.wispcoolwisp.dagger_viewmodel_sample.di.modules.ViewModelModule
+import com.wispapp.gcpsoftwaretestapp.core.di.modules.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -14,6 +16,8 @@ import dagger.android.AndroidInjectionModule
 @Component(
     modules = [
         AppModule::class,
+        RemoteModule::class,
+        DataSourceModule::class,
         AndroidInjectionModule::class,
         ActivityInjectionModule::class,
         ViewModelModule::class]

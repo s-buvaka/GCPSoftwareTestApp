@@ -6,18 +6,37 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.wispapp.gcpsoftwaretestapp.R
+import com.wispapp.gcpsoftwaretestapp.core.di.Injectable
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.Function
 import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuItemModel
 import com.wispapp.gcpsoftwaretestapp.ui.base.BaseFragment
+import com.wispapp.gcpsoftwaretestapp.ui.image.ImageFragment
+import com.wispapp.gcpsoftwaretestapp.ui.text.TextFragment
+import com.wispapp.gcpsoftwaretestapp.ui.url.WebViewFragment
+import com.wispapp.gcpsoftwaretestapp.ui.viewmodels.MenuViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_drawer.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Injectable {
+
+    private lateinit var menuViewModel: MenuViewModel
+
+    @Inject
+    fun inject(viewModel: MenuViewModel) {
+        menuViewModel = viewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        menuViewModel.getMenu()
+
+        menuViewModel.menuLiveData.observe(this, Observer { menuItems ->
+            menuItems.forEach { addTitleToNavDrawer(it) }
+        })
     }
 
     private fun addTitleToNavDrawer(menuItem: MenuItemModel) {

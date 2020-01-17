@@ -1,4 +1,4 @@
-package com.wispapp.gcpsoftwaretestapp.ui.main
+package com.wispapp.gcpsoftwaretestapp.ui.image
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,8 @@ class ImageFragment : BaseFragment() {
         private const val ARG_IMAGE_URL = "image_url"
 
         fun newInstance(imageUrl: String): ImageFragment {
-            val fragment = ImageFragment()
+            val fragment =
+                ImageFragment()
             val args = Bundle().apply {
                 putString(ARG_IMAGE_URL, imageUrl)
             }

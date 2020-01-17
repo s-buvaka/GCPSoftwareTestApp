@@ -1,14 +1,16 @@
-package com.wispcoolwisp.dagger_viewmodel_sample.di.modules
+package com.wispapp.gcpsoftwaretestapp.core.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.wispcoolwisp.dagger_viewmodel_sample.DataSource
-import com.wispcoolwisp.dagger_viewmodel_sample.MainActivity
-import com.wispcoolwisp.dagger_viewmodel_sample.di.ViewModelKey
+import com.wispapp.gcpsoftwaretestapp.core.di.ViewModelKey
 import com.wispapp.gcpsoftwaretestapp.core.extensions.ViewModelClassMap
-import com.wispcoolwisp.dagger_viewmodel_sample.viewmodel.CocaColaViewModel
-import com.wispcoolwisp.dagger_viewmodel_sample.viewmodel.CocaColaViewModelImpl
+import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuItemModel
+import com.wispapp.gcpsoftwaretestapp.core.model.pojo.MenuResponse
+import com.wispapp.gcpsoftwaretestapp.core.model.repository.DataSource
+import com.wispapp.gcpsoftwaretestapp.ui.main.MainActivity
+import com.wispapp.gcpsoftwaretestapp.ui.viewmodels.MenuViewModel
+import com.wispapp.gcpsoftwaretestapp.ui.viewmodels.MenuViewModelImpl
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
@@ -23,30 +25,27 @@ abstract class ViewModelModule {
 
     @Module
     class InjectViewModel {
-        // Define the return type to be the abstraction, but ViewModelProviders 'gets' the implementation
         @Provides
-        fun cocaColaViewModel(
+        fun menuViewModel(
             factory: ViewModelProvider.Factory,
             target: MainActivity
-        ): CocaColaViewModel =
-            ViewModelProviders.of(target, factory).get(CocaColaViewModelImpl::class.java)
+        ): MenuViewModel =
+            ViewModelProviders.of(target, factory).get(MenuViewModelImpl::class.java)
     }
 
-    // Used so fragments can get the ViewModel from their activity without knowing what the implementation is
     @Module
     class ProvideViewModelAbstractionMap {
         @Provides
         fun viewModelClassMap(): ViewModelClassMap =
-            mapOf(CocaColaViewModel::class.java to CocaColaViewModelImpl::class.java)
+            mapOf(MenuViewModel::class.java to MenuViewModelImpl::class.java)
     }
 
     @Module
     class ProvideViewModel {
         @Provides
         @IntoMap
-        @ViewModelKey(CocaColaViewModel::class)
-        // another small alteration, using the abstract class as the ViewModelKey and return type
-        fun cocaColaViewModel(dataSource: DataSource): ViewModel =
-            CocaColaViewModelImpl(dataSource)
+        @ViewModelKey(MenuViewModel::class)
+        fun menuViewModel(dataSource: DataSource<MenuResponse, List<MenuItemModel>>): ViewModel =
+            MenuViewModelImpl(dataSource)
     }
 }
