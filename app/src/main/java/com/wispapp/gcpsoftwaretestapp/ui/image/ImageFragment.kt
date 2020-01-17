@@ -4,25 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.wispapp.gcpsoftwaretestapp.R
+import com.wispapp.gcpsoftwaretestapp.core.common.ImageLoaderImpl
+import com.wispapp.gcpsoftwaretestapp.core.di.Injectable
+import com.wispapp.gcpsoftwaretestapp.core.executors.AppExecutors
+import com.wispapp.gcpsoftwaretestapp.core.extensions.ViewModelClassMap
+import com.wispapp.gcpsoftwaretestapp.core.extensions.sharedViewModel
 import com.wispapp.gcpsoftwaretestapp.ui.base.BaseFragment
+import com.wispapp.gcpsoftwaretestapp.ui.viewmodels.MenuViewModel
+import kotlinx.android.synthetic.main.fragment_image.*
+import javax.inject.Inject
 
-class ImageFragment : BaseFragment() {
+class ImageFragment : BaseFragment(), Injectable {
 
-    companion object {
+    private lateinit var classMap: ViewModelClassMap
+    private lateinit var factory: ViewModelProvider.Factory
 
-        private const val ARG_IMAGE_URL = "image_url"
+    private val menuViewModel: MenuViewModel by lazy {
+        sharedViewModel<MenuViewModel>(factory, classMap)
+    }
 
-        fun newInstance(imageUrl: String): ImageFragment {
-            val fragment =
-                ImageFragment()
-            val args = Bundle().apply {
-                putString(ARG_IMAGE_URL, imageUrl)
-            }
-            fragment.arguments = args
+    private val imageLoader = ImageLoaderImpl(AppExecutors())
 
-            return fragment
-        }
+    @Inject
+    fun inject(classMap: ViewModelClassMap, factory: ViewModelProvider.Factory) {
+        this.classMap = classMap
+        this.factory = factory
     }
 
     override fun onCreateView(
@@ -33,7 +42,27 @@ class ImageFragment : BaseFragment() {
     }
 
     override fun loadContent() {
-        val imageUrl = arguments?.getString(ARG_IMAGE_URL)
+        val title = arguments?.getString(ARG_MENU_TITLE)
 
+        menuViewModel.menuLiveData.observe(this, Observer { menuItems ->
+            val menuItem = menuItems.find { it.name == title }
+            menuItem?.let { imageLoader.loadImage(it.param, param_image_view) }
+        })
+    }
+
+    companion object {
+
+        private const val ARG_MENU_TITLE = "title"
+
+        fun newInstance(title: String): ImageFragment {
+            val fragment =
+                ImageFragment()
+            val args = Bundle().apply {
+                putString(ARG_MENU_TITLE, title)
+            }
+            fragment.arguments = args
+
+            return fragment
+        }
     }
 }

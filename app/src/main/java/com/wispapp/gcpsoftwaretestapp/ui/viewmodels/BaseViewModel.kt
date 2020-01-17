@@ -20,10 +20,6 @@ abstract class BaseViewModel : ViewModel() {
         exception.postValue(errorMessage)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
     private fun setLoading(isLoading: Boolean) {
         isDataLoading.postValue(isLoading)
     }

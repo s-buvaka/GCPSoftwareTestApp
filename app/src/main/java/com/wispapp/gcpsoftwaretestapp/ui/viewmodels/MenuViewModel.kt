@@ -20,11 +20,13 @@ class MenuViewModelImpl(private val dataSource: DataSource<MenuResponse, List<Me
     override val menuLiveData = MutableLiveData<List<MenuItemModel>>()
 
     override fun getMenu() {
+        showLoader()
         backgroundExecutor.execute {
             when (val result = dataSource.get()) {
                 is Result.Success -> menuLiveData.postValue(result.data)
                 is Result.Error -> showError(result.exception.message ?: "Error receiving menu")
             }
+            hideLoader()
         }
     }
 }

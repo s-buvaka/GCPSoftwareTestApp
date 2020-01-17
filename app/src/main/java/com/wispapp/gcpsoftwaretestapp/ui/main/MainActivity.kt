@@ -2,8 +2,10 @@ package com.wispapp.gcpsoftwaretestapp.ui.main
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), Injectable {
 
     private lateinit var menuViewModel: MenuViewModel
+    private var isDataNotLoaded = true
 
     @Inject
     fun inject(viewModel: MenuViewModel) {
@@ -32,10 +35,47 @@ class MainActivity : AppCompatActivity(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        menuViewModel.getMenu()
 
+        savedInstanceState?.getBoolean(IS_DATA_LOADED)?.let { isDataNotLoaded = it }
+
+        if (isDataNotLoaded) menuViewModel.getMenu()
+
+        observeMenuData()
+        observeDataLoading()
+        observeException()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(IS_DATA_LOADED, isDataNotLoaded)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (supportFragmentManager.fragments.size < 1)
+            finish()
+    }
+
+    private fun observeMenuData() {
         menuViewModel.menuLiveData.observe(this, Observer { menuItems ->
             menuItems.forEach { addTitleToNavDrawer(it) }
+            if (isDataNotLoaded) openFragment(getFragmentFromState(menuItems[0]), menuItems[0])
+            isDataNotLoaded = false
+        })
+    }
+
+    private fun observeDataLoading() {
+        menuViewModel.isDataLoading.observe(this, Observer { isLoading ->
+            if (isLoading)
+                progress_bar.visibility = View.VISIBLE
+            else
+                progress_bar.visibility = View.GONE
+        })
+    }
+
+    private fun observeException() {
+        menuViewModel.exception.observe(this, Observer {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         })
     }
 
@@ -45,7 +85,7 @@ class MainActivity : AppCompatActivity(), Injectable {
         val fragment = getFragmentFromState(menuItem)
 
         view.setOnClickListener {
-            openFragment(fragment)
+            openFragment(fragment, menuItem)
             nav_drawer.closeDrawers()
         }
 
@@ -76,17 +116,25 @@ class MainActivity : AppCompatActivity(), Injectable {
 
     private fun getFragmentFromState(menuItem: MenuItemModel): BaseFragment {
         return when (menuItem.function) {
-            Function.TEXT -> TextFragment.newInstance(menuItem.param)
-            Function.IMAGE -> ImageFragment.newInstance(menuItem.param)
-            Function.URL -> WebViewFragment.newInstance(menuItem.param)
+            Function.TEXT -> TextFragment.newInstance(menuItem.name)
+            Function.IMAGE -> ImageFragment.newInstance(menuItem.name)
+            Function.URL -> WebViewFragment.newInstance(menuItem.name)
         }
     }
 
-    private fun openFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
+    private fun openFragment(fragment: Fragment, menuItem: MenuItemModel) {
+        if (supportFragmentManager.findFragmentByTag(menuItem.name) != null) {
+            supportFragmentManager.popBackStack(menuItem.name, 0)
+        } else {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, menuItem.name)
+                .addToBackStack(menuItem.name)
+                .commit()
+        }
+    }
+
+    companion object {
+        private const val IS_DATA_LOADED = "is_data_loaded"
     }
 }
